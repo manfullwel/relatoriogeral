@@ -1,0 +1,25 @@
+# Arquivos sensíveis
+*(JULIO)*.xlsx
+*(LEANDRO_ADRIANO)*.xlsx
+
+# Ambiente virtual
+venv/
+env/
+.env
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.tmp
+*.temp
+.DS_Store
