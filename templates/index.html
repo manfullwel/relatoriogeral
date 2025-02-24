@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Análise de Dados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line"></i> DataAnalytics SAAS
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="acordo">Acordos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="diario">Relatório Diário</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="geral">Relatório Geral</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Filtros</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="filterForm">
+                            <div class="mb-3">
+                                <label class="form-label">Grupo</label>
+                                <select class="form-select" id="groupSelect">
+                                    <option value="todos">Todos</option>
+                                    <option value="JULIO">JULIO</option>
+                                    <option value="LEANDRO">LEANDRO</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="statusSelect" multiple>
+                                    <option value="PENDENTE">PENDENTE</option>
+                                    <option value="VERIFICADO">VERIFICADO</option>
+                                    <option value="ANÁLISE">ANÁLISE</option>
+                                    <option value="PRIORIDADE">PRIORIDADE</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Período</label>
+                                <input type="date" class="form-control" id="startDate">
+                                <input type="date" class="form-control mt-2" id="endDate">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="row">
+                    <!-- KPI Cards -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Total de Casos</h6>
+                                <h2 class="card-title" id="totalCases">0</h2>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Pendentes</h6>
+                                <h2 class="card-title" id="pendingCases">0</h2>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 25%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Resolvidos</h6>
+                                <h2 class="card-title" id="resolvedCases">0</h2>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Taxa de Resolução</h6>
+                                <h2 class="card-title" id="resolutionRate">0%</h2>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Distribuição por Status</h5>
+                                <div id="statusChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Evolução Temporal</h5>
+                                <div id="timelineChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Dados Detalhados</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                        <th>Grupo</th>
+                                        <th>Responsável</th>
+                                        <th>Tempo de Resolução</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dados serão preenchidos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
