@@ -1,6 +1,6 @@
 # DataAnalytics Acordo Seven
 
-Um micro-SAAS para análise de dados e auditoria, com funcionalidades de análise dinâmica e geração de relatórios.
+Um micro-sistema para análise de dados e auditoria, com funcionalidades de análise dinâmica e geração de relatórios.
 
 ## Funcionalidades
 
