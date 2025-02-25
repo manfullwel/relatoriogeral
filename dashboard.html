@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Análise de Desempenho</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card { margin-bottom: 20px; }
+        .metric-card { text-align: center; padding: 15px; }
+        .metric-value { font-size: 24px; font-weight: bold; }
+        .metric-label { color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Dashboard de Análise de Desempenho</h1>
+        
+        <!-- Métricas Gerais -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Grupo JULIO</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tempo Médio:</strong> 0.0 dias</p>
+                        <p><strong>Casos Pendentes:</strong> 641</p>
+                        <p><strong>Maior Gargalo:</strong> ELISANGELA (680 casos)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Grupo LEANDRO</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Tempo Médio:</strong> 0.0 dias</p>
+                        <p><strong>Casos Pendentes:</strong> 567</p>
+                        <p><strong>Maior Gargalo:</strong> GREICY (587 casos)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Correlação Volume vs Eficiência</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="correlacao_plot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var trace_julio = {
+            x: [709, 709, 709, 708, 709, 709, 709, 708, 710, 557],
+            y: [6.205923836389281, 1.1283497884344147, 4.513399153737659, 6.073446327683616, 4.372355430183357, 3.6671368124118473, 2.538787023977433, 3.248587570621469, 3.8028169014084505, 0.8976660682226212],
+            mode: 'markers',
+            type: 'scatter',
+            name: 'Grupo JULIO',
+            text: ['ANA LIDIA', 'FELIPE', 'MATHEUS', 'ANA GESSICA', 'POLIANA', 'IGOR', 'ELISANGELA', 'NUNO', 'THALISSON', 'VICTOR ADRIANO'],
+            marker: { size: 10 }
+        };
+
+        var trace_leandro = {
+            x: [703, 703, 703, 703, 708, 707, 707, 707, 708, 707, 707, 707],
+            y: [6.401137980085349, 1.991465149359886, 3.698435277382646, 4.836415362731152, 4.519774011299435, 6.223479490806223, 3.818953323903819, 4.809052333804809, 2.11864406779661, 0.5657708628005658, 2.828854314002829, 2.545968882602546],
+            mode: 'markers',
+            type: 'scatter',
+            name: 'Grupo LEANDRO',
+            text: ['AMANDA SANTANA', 'BRUNO ', 'EDIANE', 'FABIANA', 'ITAYNNARA', 'MARIA BRUNA', 'MONYZA', 'JULIA', 'IZABEL', 'VITORIA', 'KATIA', 'GREICY'],
+            marker: { size: 10 }
+        };
+
+        var layout = {
+            title: 'Correlação entre Volume e Eficiência',
+            xaxis: { title: 'Volume de Casos' },
+            yaxis: { title: 'Eficiência (%)' },
+            hovermode: 'closest'
+        };
+
+        Plotly.newPlot('correlacao_plot', [trace_julio, trace_leandro], layout);
+    </script>
+</body>
+</html>
